@@ -1,6 +1,5 @@
 # =====================================================
-# XAI COMPARISON FINAL 2 - FULL FIX (LIME + METRIC)
-# =====================================================
+# XAI COMPARISON FINAL
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
@@ -255,4 +254,3 @@ for ds in DATASETS:
 df = pd.DataFrame(comparison_table)
 df.to_excel(XAI_DIR / "comparison" / "summary.xlsx", index=False)
 
-print("\nDONE ALL")
