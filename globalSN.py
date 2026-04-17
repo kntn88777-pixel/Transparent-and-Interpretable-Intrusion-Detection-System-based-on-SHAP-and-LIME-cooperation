@@ -26,12 +26,12 @@ SAMPLE_INDICES = [0, 1, 5, 10, 15, 20, 30]
 def fix_feature_mismatch(X, expected_dim=30):
     if X.shape[1] < expected_dim:
         diff = expected_dim - X.shape[1]
-        print(f"⚠️ Padding thêm {diff} features")
+        print(f" Padding thêm {diff} features")
         pad = np.zeros((X.shape[0], diff))
         X = np.hstack((X, pad))
 
     elif X.shape[1] > expected_dim:
-        print("⚠️ Cắt bớt feature")
+        print("Cắt bớt feature")
         X = X[:, :expected_dim]
 
     return X
@@ -47,12 +47,12 @@ def load_feature_names():
             try:
                 with open(path, "rb") as f:
                     names = pickle.load(f)
-                print("✅ Loaded feature names")
-                return names  # 🔥 giữ full, không cắt 30
+                print("Loaded feature names")
+                return names  #  giữ full, không cắt 30
             except:
                 pass
 
-    print("⚠️ Using default feature names")
+    print(" Using default feature names")
     return [f"Feature_{i}" for i in range(30)]
 
 
@@ -64,7 +64,7 @@ def load_data():
     if y.ndim > 1:
         y = np.argmax(y, axis=1)
 
-    # 🔥 FIX mismatch feature
+    #  FIX mismatch feature
     X = fix_feature_mismatch(X, 30)
 
     return X[:N_GLOBAL], y[:N_GLOBAL]
@@ -79,7 +79,7 @@ def load_model(model_name):
             with open(MODEL_DIR / f"CIC17_{model_name}.pkl", "rb") as f:
                 model = pickle.load(f)
                 if hasattr(model, "n_jobs"):
-                    model.n_jobs = 1  # 🔥 tránh crash
+                    model.n_jobs = 1  #  tránh crash
                 return model
     except Exception as e:
         print(f"   ❌ Không load được model {model_name}: {e}")
@@ -92,7 +92,7 @@ def run_local_explanation():
     feature_names = load_feature_names()
 
     print("=" * 100)
-    print("🔥 LOCAL EXPLANATION (FULL MODEL)")
+    print(" LOCAL EXPLANATION (FULL MODEL)")
     print("=" * 100)
 
     models = ["RandomForest", "LightGBM", "AdaBoost", "MLP", "DNN", "CNN", "LSTM"]
@@ -112,9 +112,9 @@ def run_local_explanation():
         # ================= SHAP =================
         print("   → SHAP...")
         try:
-            X_sample = X[:30]  # 🔥 giảm để tránh crash
+            X_sample = X[:30]  #  giảm để tránh crash
 
-            # 🔥 DÙNG KERNEL CHO TẤT CẢ → TRÁNH CRASH
+            #  DÙNG KERNEL CHO TẤT CẢ → TRÁNH CRASH
             background = X_sample[:20]
 
             def predict_fn(x):
@@ -190,13 +190,13 @@ def run_local_explanation():
         except Exception as e:
             print(f"     ❌ LIME lỗi: {e}")
 
-    print("\n🎯 DONE FULL LOCAL XAI!")
-    print(f"📂 Saved at: {SAVE_DIR / 'signal22'}")
+    print("\nDONE FULL LOCAL XAI!")
+    print(f"Saved at: {SAVE_DIR / 'signal22'}")
 
 
 # ================= RUN =================
 if __name__ == "__main__":
-    print("🔥 START LOCAL FULL MODEL...")
+    print(" START LOCAL FULL MODEL...")
     tf.get_logger().setLevel('ERROR')
     tf.config.set_visible_devices([], 'GPU')
     run_local_explanation()
