@@ -25,7 +25,7 @@ for dataset in datasets:
     plt.figure(figsize=(16,10))
 
     # =========================
-    # 1. PERFORMANCE (GIỮ FAF1)
+    # 1. PERFORMANCE 
     # =========================
     plt.subplot(2,2,1)
     plt.bar(x - 0.3, data["Accuracy"], width=0.2)
